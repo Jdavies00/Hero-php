@@ -5,7 +5,7 @@ $username = "root";
 $password = "root";
 $database = "heros";
 
-$postData = $_POST;//['state']; // if post != then post data 
+$postData = $_POST; //['state']; // if post != then post data 
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $database);
@@ -15,47 +15,34 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT id, name, about_me, biography FROM heroes"; 
+$sql = "SELECT id, name, about_me, biography FROM heroes";
 $result = $conn->query($sql);
 
- $output = "";
+$output = "";
 
 if ($result->num_rows > 0) {
-    
+
     while ($row = $result->fetch_assoc()) {
+        //while looping throught throught 
+        // creat a new for for eeach hero 
+        // each new form with each new hero will have their own button
+        //button type is submit 
+        // on submit sned delete id to the post.php
+        //post.php recognizes that delet id 
+        //delete id is tired to the id of the hero 
+        // <form action = post.php method = post>
+        //</form>
         
-        // $sql = "SELECT id, name, about_me, biography FROM heroes WHERE id = '$_POST";
+
+        $nameoutput .= '<form class=btn-primary >' . $row["name"].'</form>';
+
         
-
-        // var_dump($row);
-        // $output .= "<h2 class= text-center > " . $row["name"] . "</h2>" .
-        // "<div class= text-center> 
-        // id:" . $row["id"] .
-        // " - Name: " . $row["name"] .
-        // " " . $row["about_me"] .
-        // " " . $row["biography"] .
-        // "</div>";
-        
-        //function getHeroByID
-        //
-
-        $nameoutput .=
-        //"<h2 class= text-center pb-4> "  . $row["name"] ."</h2>";
-        //'<a href='index.php/Users/jamesdavies/Sites/heroes_php/img/bestchillman.jpg'</a> '
-        //somw how fix pictures
-
-        '<a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">' . $row["name"] .'</a>';
-  
-
 
         $output .=
-        "<h2 class= text-center > " . $row["name"] . "</h2>" .
-        // "<hr>" .
-        // "<p class=lead> id: " . $row["id"] .
-        // " - Name: " . $row["name"] .
-        " " . $row["about_me"] .
-        " " . $row["biography"] .
-        "</p>";
+            "<h2 class= text-center > " . $row["name"] . "</h2>" .
+            " " . $row["about_me"] .
+            " " . $row["biography"] .
+            "</p>";
         "<hr>";
         "</div>";
     }
@@ -82,23 +69,32 @@ $conn->close();
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <div>
-<h1>
-SUPER FRIENDS   
- </h1>
-      </div>
-<body class="text-center">
+    <h1>
+        SUPER FRIENDS
+    </h1>
+</div>
 
-    <form class='col-3 container text-center' action="'post.php', 'heroprofile.php' " method="post">
-        Name:<hr> <input class="form-control" type="text" name="name"><br>
-        About Me:<hr> <input  class="form-control"type="text" name="about_me"><br>
-        Biography:<hr> <textarea class="form-control" type="text" name="biography"></textarea><br>
-        <!-- <input type= "hidden" name="create_new_hero"> -->
+<body class="text-center">
+    <!-- inital get heros sends to post -->
+    <form class='col-3 container text-center' action="post.php" method="post">
+        Name:
+        <hr> <input class="form-control" type="text" name="name"><br>
+        About Me:
+        <hr> <input class="form-control" type="text" name="about_me"><br>
+        Biography:
+        <hr> <textarea class="form-control" type="text" name="biography"></textarea><br>
         <input type="submit">
     </form>
+    
+    <!-- delete -->
     <div class=jumbotron>
-        <?php
-        echo $nameoutput;
-        ?>
+        <form class='col-3 container text-center btn btn-success' action="post.php" method="post">
+            <btn type=" submit hidden" name="delete">
+                <?php
+                echo $nameoutput;
+                ?>
+            </btn>
+        </form>
         <hr class=my-4>
     </div>
 
